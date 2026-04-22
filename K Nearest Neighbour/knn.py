@@ -7,14 +7,14 @@ class Knn:
         self.k = k
     
     def fit(self, X_train, y_train):
-        self.x_train = np.array(X_train)
+        self.X_train = np.array(X_train)
         self.y_train = np.array(y_train)
 
     def predict(self, X_test):
         y_pred = []
 
         for i in X_test:
-            pred = predict_single(i)
+            pred = self.predict_single(i)
             y_pred.append(pred)
 
         return y_pred
@@ -22,11 +22,11 @@ class Knn:
     def predict_single(self, X):
         pair_list = []
 
-        for i in self.X_train:
-            sample_pair = distance(X, self.X_train[i]), self.y_train[i]
+        for i in range(len(self.X_train)):
+            sample_pair = self.distance(X, self.X_train[i]), self.y_train[i]
             pair_list.append(sample_pair)
         
-        pair_list.sort(lambda x: x[0])
+        pair_list.sort(key=lambda x: x[0])
 
         # fke = first K elements
         fke = pair_list[:self.k]
@@ -35,9 +35,9 @@ class Knn:
 
         prediction = count.most_common(1)[0]
 
-        return prediction
+        return prediction[1]
     
-    def distance(self, X1, xX):
+    def distance(self, X1, X2):
         X1 = np.array(X1)
         X2 = np.array(X2)
 
