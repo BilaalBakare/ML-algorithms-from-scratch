@@ -23,7 +23,6 @@ class Knn:
         distance = np.sqrt(np.sum((self.X_train - X) ** 2, axis=1))
         distance_sorted_sliced = np.argsort(distance)[:self.k]
         labels = self.y_train[distance_sorted_sliced]
-        print(np.array(labels))
 
         count = Counter(labels)
         prediction = count.most_common(1)[0][0]
