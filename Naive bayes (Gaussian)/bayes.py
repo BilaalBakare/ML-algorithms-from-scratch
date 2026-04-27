@@ -12,9 +12,9 @@ class naive:
         self._prior_dictionary = {}
         target_len = len(y_train)
 
-        self.classes = set(y_train)
+        self.classes = np.unique(y_train)
         for aclass in self.classes:
-            count = [y_train == aclass].sum()
+            count = np.sum([y_train == aclass])
             prob = count / target_len
             self._prior_dictionary[aclass] = prob
 
@@ -31,8 +31,9 @@ class naive:
             mean = np.mean(rows, axis=0)
             self._mean_dictionary[aclass] = mean
 
-            variance = np.var(rows, axis=0)
+            variance = np.var(rows, axis=0) + 1e-9
             self._variance_dictionary[aclass] = variance
+        
             
     
     def predict(self, X_test):
@@ -42,13 +43,13 @@ class naive:
         for i in X_test:
             class_probs = []
             for aclass in self.classes:
-                likelihoods = np.sum(np.log(self._gaussian(X_test[i], self._mean_dictionary[aclass], self._var_dictionary[aclass])))
+                likelihoods = np.sum(np.log(self._gaussian(i, self._mean_dictionary[aclass], self._variance_dictionary[aclass])))
                 prior = self._prior_dictionary[aclass] 
                 prob = np.log(prior) + likelihoods
 
-                class_probs.append(aclass, prob)
-            class_probs.sort(key=lambda x: x[1])
-            y_pred.append(class_probs[0][0])
+                class_probs.append((aclass, prob))
+            prediction = max(class_probs, key=lambda x: x[1])[0]
+            y_pred.append(prediction)
         
         return np.array(y_pred)
             

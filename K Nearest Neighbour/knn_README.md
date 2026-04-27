@@ -19,6 +19,7 @@
 
 ## Concept
 
+
 > *"Tell me who your friends are, and I will tell you who you are."*
 
 This proverb is the entire philosophy of KNN. A new data point is classified by looking at the K closest points in the training data — its nearest neighbors — and letting them vote. Whatever class most of them belong to, that is the prediction.
