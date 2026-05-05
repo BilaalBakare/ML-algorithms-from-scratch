@@ -28,10 +28,16 @@ class nn:
 
         return self.layer_outputs_activated[-1]
 
-    def _sigmoid(self, input: np.ndarray) -> np.ndarray: 
-        return 1 / (1 + np.exp(-input))
+    def _sigmoid(self, layer_output: np.ndarray) -> np.ndarray: 
+        return 1 / (1 + np.exp(-layer_output))
 
-    def _relu(self, input: np.ndarray) -> np.ndarray:
-        return np.maximum(0, input)
+    def _relu(self, layer_output: np.ndarray) -> np.ndarray:
+        return np.maximum(0, layer_output)
 
-    def _
+    def _loss(self, y_pred: np.ndarray, y_true: np.ndarray) -> np.ndarray:
+        y_pred = np.clip(y_pred, 1e-9, 1 - 1e-9)
+        numerator = -((y_true * np.log(y_pred)) + ((1-y_true) * np.log(1-y_pred)))
+        denominator = len(y_true)
+
+        loss = np.sum(numerator) / denominator
+        return loss
