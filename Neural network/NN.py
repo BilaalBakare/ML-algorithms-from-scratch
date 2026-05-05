@@ -12,3 +12,24 @@ class nn:
 
             self.weight.append(np.random.randn(*shape))
             self.biases.append(np.zeros(shape[1]))
+
+    def forward_pass(self, input: list): 
+        self.layer_outputs = []
+        self.layer_outputs_activated = []
+
+        for i in range(len(self.weights)):
+            current = input @ self.weights[i] + self.biases[i]
+            self.layer_outputs.append(current)
+
+            activated = self._sigmoid(current) if i == (len(self.weights) - 1) else self._relu(current)
+            self.layer_outputs_activated.append(activated)
+            
+            input = activated
+
+        return self.layer_outputs_activated[-1]
+
+    def _sigmoid(self):
+        pass
+
+    def _relu(self):
+        pass
