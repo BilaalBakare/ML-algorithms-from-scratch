@@ -13,7 +13,7 @@ class nn:
             self.weight.append(np.random.randn(*shape))
             self.biases.append(np.zeros(shape[1]))
 
-    def forward_pass(self, input: list): 
+    def _forward_pass(self, input: list): 
         self.layer_outputs = []
         self.layer_outputs_activated = []
 
@@ -28,8 +28,10 @@ class nn:
 
         return self.layer_outputs_activated[-1]
 
-    def _sigmoid(self):
-        pass
+    def _sigmoid(self, input: np.ndarray) -> np.ndarray: 
+        return 1 / (1 + np.exp(-input))
 
-    def _relu(self):
-        pass
+    def _relu(self, input: np.ndarray) -> np.ndarray:
+        return np.maximum(0, input)
+
+    def _
