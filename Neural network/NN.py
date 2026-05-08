@@ -23,17 +23,18 @@ class nn:
             current = input @ self.weights[i] + self.biases[i]
             self.layer_outputs.append(current)
 
-            activated = self._sigmoid(current) if i == (len(self.weights) - 1) else self._relu(current)
+            activated = self._softmax(current) if i == (len(self.weights) - 1) else self._relu(current)
             self.layer_outputs_activated.append(activated)
             
             input = activated
 
         return self.layer_outputs_activated[-1]
 
-    def _sigmoid(self, layer_output: np.ndarray) -> np.ndarray: 
-        return 1 / (1 + np.exp(-layer_output))
+    def softmax(self, layer_output: np.ndarray):
+        e_x = np.exp(layer_output)
+        return e_x / e_x.sum(axis=0)
 
-    def _relu(self, layer_output: np.ndarray) -> np.ndarray:
+    def _relu(self, layer_output: np.ndarray):
         return np.maximum(0, layer_output)
     
     def _relu_derivative(self, layer_output: np.ndarray) -> np.ndarray:
@@ -47,18 +48,13 @@ class nn:
         loss = np.sum(numerator) / denominator
         return loss
     
-    def _backpropagation(self, y_true):
-        y_pred = self.layer_outputs_activated[-1]
+    def _backpropagation(self, y_true: np.ndarray):
+        # get the gradients of weights and biases
 
-        error_signal = y_pred - y_true
-        dW1 = self.layer_outputs_activated[-2].T @ error_signal
-        db1 = np.sum(error_signal, axis=0)
+        error_signal = y_true - self.layer_outputs_activated[-1]
 
-        hidden_error_signal = error_signal @ self.weights[-1].T
-        hidden_error_signal_relu = hidden_error_signal * self._relu_derivative(self.layer_outputs[0])
-        dW2 = self.layer_outputs_activated[-3].T @ hidden_error_signal_relu
-        db2 = np.sum(hidden_error_signal_relu, axis=0)
-
-        return dW1, db1, dW2, db2
+        for i in range(len(self.layer_outputs_activated) - 1, -1, -1):
+            
     
-    def fit()
+    def fit(self):
+        pass
