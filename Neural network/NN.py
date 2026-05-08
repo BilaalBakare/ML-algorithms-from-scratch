@@ -41,11 +41,10 @@ class nn:
         return np.minimum(0, layer_output)
 
     def _loss(self, y_pred: np.ndarray, y_true: np.ndarray) -> float:
+        # categorical cross entropy
         y_pred = np.clip(y_pred, 1e-9, 1 - 1e-9)
-        numerator = -((y_true * np.log(y_pred)) + ((1-y_true) * np.log(1-y_pred)))
-        denominator = len(y_true)
 
-        loss = np.sum(numerator) / denominator
+        loss = loss = -np.mean(np.sum(y_true * np.log(y_pred), axis=1))
         return loss
     
     def _backpropagation(self, y_true: np.ndarray):
