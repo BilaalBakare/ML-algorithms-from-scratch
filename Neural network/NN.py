@@ -90,4 +90,11 @@ class nn:
 
             print(f'Epoch {epoch} loss = {loss}')
 
-    def predict(self, )
+    def predict(self, X_test:np.ndarray):
+        y_pred = []
+        def predict(self, X_test: np.ndarray):
+            probs = self._forward_pass(X_test)
+            return np.argmax(probs, axis=1)
+
+    def score(self, y_pred: np.ndarray, y_true: np.ndarray):
+        pass
