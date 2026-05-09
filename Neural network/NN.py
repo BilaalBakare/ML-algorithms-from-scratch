@@ -48,12 +48,23 @@ class nn:
         return loss
     
     def _backpropagation(self, y_true: np.ndarray):
-        # get the gradients of weights and biases
+        error_signal = self.layer_outputs_activated[-1] - y_true
 
-        error_signal = y_true - self.layer_outputs_activated[-1]
+        self.weight_gradients = []
+        self.bias_gradients = []
+        
+        for i in range(len(self.weights)-1, -1, -1):
+            weigth_gradient = self.layer_outputs_activated[i-1].T @ error_signal 
+            self.weight_gradients.append(weigth_gradient)
+            bias_gradient = np.sum(error_signal, axis=0)
+            self.bias_gradients.append(bias_gradient)
 
-        for i in range(len(self.layer_outputs_activated) - 1, -1, -1):
-            
-    
+            if i == 0:
+                break 
+
+            error_signal_active = error_signal @ self.weights[i].T
+            error_signal_normal = error_signal_active * self._relu_derivative(self.layer_outputs[i-1])
+            error_signal = error_signal_normal
+
     def fit(self):
         pass
