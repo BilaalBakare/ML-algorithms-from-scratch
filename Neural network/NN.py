@@ -10,7 +10,7 @@ class nn:
         for i in range(len(self.layers)-1):
             shape = self.layers[i], self.layers[i+1]
 
-            self.weights.append(np.random.randn(*shape))
+            self.weights.append(np.random.randn(*shape) * np.sqrt(2 / (shape[0] + shape[1])))
             self.biases.append(np.zeros(shape[1]))
 
     def _forward_pass(self, input: np.ndarray) -> np.ndarray: 
@@ -65,6 +65,8 @@ class nn:
             error_signal_active = error_signal @ self.weights[i].T
             error_signal_normal = error_signal_active * self._relu_derivative(self.layer_outputs[i-1])
             error_signal = error_signal_normal
+        
+        # print(np.linalg.norm(self.weight_gradients[-1]))
 
     def fit(self, X_train: np.ndarray, y_train: np.ndarray, epochs: int, learning_rate: int, batch_size=32):
         y_train = np.eye(10)[y_train]
@@ -76,25 +78,29 @@ class nn:
 
             train_set_size = len(X_shuffled)
 
+            loss = 0 # initialization
+
             for batch in range(0, train_set_size, batch_size):
                 X_batch = X_shuffled[batch:batch+batch_size]
                 y_batch = y_shuffled[batch:batch+batch_size]
 
                 y_pred = self._forward_pass(X_batch)
-                loss = self._loss(y_pred, y_batch) 
+                loss += self._loss(y_pred, y_batch) 
                 self._backpropagation(y_batch)
 
                 for i in range(len(self.weights)):
-                    self.weights[i] -= learning_rate * self.weight_gradients[-(i+1)]
-                    self.biases[i]  -= learning_rate * self.bias_gradients[-(i+1)]
+                    grad_w = np.clip(self.weight_gradients[-(i+1)], -0.1, 0.1)
+                    grad_b = np.clip(self.bias_gradients[-(i+1)], -0.1, 0.1)
+                    
+                    self.weights[i] -= learning_rate * grad_w
+                    self.biases[i]  -= learning_rate * grad_b
 
-            print(f'Epoch {epoch} loss = {loss}')
+            print(f'Epoch {epoch} loss = {loss / (train_set_size // batch_size)}')
 
-    def predict(self, X_test:np.ndarray):
-        y_pred = []
-        def predict(self, X_test: np.ndarray):
-            probs = self._forward_pass(X_test)
-            return np.argmax(probs, axis=1)
+    
+    def predict(self, X_test: np.ndarray):
+        probs = self._forward_pass(X_test)
+        return np.argmax(probs, axis=1)
 
     def score(self, y_pred: np.ndarray, y_true: np.ndarray):
-        pass
+        return np.mean(y_pred == y_true)
