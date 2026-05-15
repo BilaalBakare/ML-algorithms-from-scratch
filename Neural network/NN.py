@@ -66,7 +66,6 @@ class nn:
             error_signal_normal = error_signal_active * self._relu_derivative(self.layer_outputs[i-1])
             error_signal = error_signal_normal
         
-        # print(np.linalg.norm(self.weight_gradients[-1]))
 
     def fit(self, X_train: np.ndarray, y_train: np.ndarray, epochs: int, learning_rate: int, batch_size=32):
         y_train = np.eye(10)[y_train]
