@@ -39,4 +39,12 @@ class LinearRegression:
     def predict(self, x):
         return self._forward_pass(x)
 
-    
+    def score(self, test_xset, test_yset):
+        y_pred = [self._forward_pass(i) for i in test_xset]
+
+        ss_res = np.sum((test_yset - y_pred) ** 2)
+        ss_tot = np.sum((test_yset - np.mean(test_yset)) ** 2)
+        
+        r2 = 1 - (ss_res / ss_tot)
+
+        print(f'R-Squared value: {r2}')
