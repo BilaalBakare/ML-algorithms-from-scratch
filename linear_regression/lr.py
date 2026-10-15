@@ -1,3 +1,5 @@
+import numpy as np
+
 class LinearRegression:
     def __init__(self):
         self.slope = 1
@@ -33,3 +35,8 @@ class LinearRegression:
 
             self.slope -= lr * self.slope_grad
             self.bias -= lr * self.bias_grad
+
+    def predict(self, x):
+        return self._forward_pass(x)
+
+    
