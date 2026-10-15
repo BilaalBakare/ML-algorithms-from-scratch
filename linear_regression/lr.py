@@ -1,6 +1,6 @@
 import numpy as np
 
-class LinearRegression:
+class MyLinearRegression:
     def __init__(self):
         self.slope = 1
         self.bias = 0
@@ -31,7 +31,8 @@ class LinearRegression:
             loss = self._loss(y_pred, output)
             self._backprop(input)
 
-            print(f'Epoch {counter}: Loss = {loss}')
+            print(f'Count {counter}: Loss = {loss}')
+            counter += 1
 
             self.slope -= lr * self.slope_grad
             self.bias -= lr * self.bias_grad
