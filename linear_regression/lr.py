@@ -11,13 +11,13 @@ class LinearRegression:
     def _loss(self, y_pred, y_true):
         return (y_true - y_pred) ** 2
 
-    def _backprop(self, input):
+    def _backprop(self, input, y_true, y_pred):
         self.slope_grad = None
         self.bias_grad = None
 
-        dldy = 2
+        dldy = 2 * (y_true - y_pred)
         dydm = input
-        dydc = self.slope * input
+        dydc = 1
 
         self.slope_grad = dldy * dydm
         self.bias_grad = dldy * dydc
