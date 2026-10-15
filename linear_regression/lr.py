@@ -8,4 +8,7 @@ class LinearRegression:
     def _forward_pass(self, input):
         return self.slope * input + self.bias
 
+    def _loss(self, y_pred, y_true):
+        return (y_true - y_pred) ^ 2
+
     
