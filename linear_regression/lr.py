@@ -9,7 +9,7 @@ class LinearRegression:
         return self.slope * input + self.bias
 
     def _loss(self, y_pred, y_true):
-        return (y_true - y_pred) ^ 2
+        return (y_true - y_pred) ** 2
 
     def _backprop(self, input):
         self.slope_grad = None
