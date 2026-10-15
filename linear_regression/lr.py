@@ -29,7 +29,7 @@ class MyLinearRegression:
         for input, output in zip(x, y_true):
             y_pred = self._forward_pass(input)
             loss = self._loss(y_pred, output)
-            self._backprop(input)
+            self._backprop(input, output, y_pred)
 
             print(f'Count {counter}: Loss = {loss}')
             counter += 1
