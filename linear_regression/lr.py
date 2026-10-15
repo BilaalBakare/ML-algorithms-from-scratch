@@ -1,5 +1,3 @@
-import numpy as np
-
 class LinearRegression:
     def __init__(self):
         self.slope = 1
@@ -22,4 +20,16 @@ class LinearRegression:
         self.slope_grad = dldy * dydm
         self.bias_grad = dldy * dydc
 
-    def 
+    def fit(self, x, y_true, lr):
+
+        counter = 1
+
+        for input, output in zip(x, y_true):
+            y_pred = self._forward_pass(input)
+            loss = self._loss(y_pred, output)
+            self._backprop(input)
+
+            print(f'Epoch {counter}: Loss = {loss}')
+
+            self.slope -= lr * self.slope_grad
+            self.bias -= lr * self.bias_grad
