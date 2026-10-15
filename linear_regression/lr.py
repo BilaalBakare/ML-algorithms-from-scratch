@@ -12,8 +12,8 @@ class LinearRegression:
         return (y_true - y_pred) ^ 2
 
     def _backprop(self, input):
-        self.slope_grad = NULL
-        self.bias_grad = NULL
+        self.slope_grad = None
+        self.bias_grad = None
 
         dldy = 2
         dydm = input
